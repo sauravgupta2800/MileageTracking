@@ -1,0 +1,59 @@
+$icon-sizes: (
+  "tiny": (
+    "height": 12,
+    "width": 12,
+  ),
+  "xs": (
+    "height": 16,
+    "width": 16,
+  ),
+  "sm": (
+    "height": 20,
+    "width": 20,
+  ),
+  "md": (
+    "height": 24,
+    "width": 24,
+  ),
+  "lg": (
+    "height": 30,
+    "width": 30,
+  ),
+  "lgx": (
+    "height": 40,
+    "width": 40,
+  ),
+  "xl": (
+    "height": 50,
+    "width": 50,
+  ),
+  "xxl": (
+    "height": 80,
+    "width": 80,
+  ),
+  "xxxl": (
+    "height": 130,
+    "width": 130,
+  ),
+);
+
+.mt-icon {
+  transition: all 0.3s ease-out;
+  @each $size, $dimension in $icon-sizes {
+    &-#{$size} {
+      width: rem(map-get($dimension, "width"));
+      height: rem(map-get($dimension, "height"));
+    }
+  }
+}
+
+.mt-icon-wrapper {
+  background: transparent;
+  transform: background 0.3s ease-out;
+  @each $size, $dimension in $icon-sizes {
+    &-#{$size} {
+      width: rem(map-get($dimension, "width") * 1.3);
+      height: rem(map-get($dimension, "height") * 1.3);
+    }
+  }
+}

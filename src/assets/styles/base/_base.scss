@@ -1,0 +1,35 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+@import url("https://fonts.googleapis.com/css?family=Roboto&display=swap");
+@import url("https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700&display=swap");
+
+html {
+  font-family: Roboto, "Open Sans", sans-serif;
+  -webkit-text-size-adjust: 100%;
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+  font-size: $base-font-size;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: Roboto, "Open Sans", sans-serif;
+  font-weight: 400;
+  color: $base-font-color;
+  text-align: left;
+  background-color: $base-bg-color;
+}
+
+ul,
+ol {
+  margin: 0;
+}
+
+p {
+  margin: 0;
+  padding: 0;
+}

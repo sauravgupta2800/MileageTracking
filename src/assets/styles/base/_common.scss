@@ -1,0 +1,59 @@
+.mt-scroll-y {
+  overflow-y: scroll;
+}
+.cursor-pointer {
+  cursor: pointer;
+}
+.text-decoration-none {
+  text-decoration: none;
+}
+.long-and-truncated {
+  flex: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.w-fit {
+  width: fit-content;
+}
+.h-fit {
+  height: fit-content;
+}
+
+.rounded-6 {
+  border-radius: 0.6rem !important;
+}
+
+// BACKGROUP_COLOR
+.mt-bg-dark {
+  background: $dark;
+}
+.mt-bg-dim-dark {
+  background: $dim-dark;
+}
+.mt-bg-light {
+  background: $light;
+}
+.mt-bg-dim-light {
+  background: $dim-light;
+}
+.mt-bg-primary {
+  background: $primary;
+}
+
+// COLOR
+.mt-color-dark {
+  color: $dark;
+}
+.mt-color-dim-dark {
+  color: $dim-dark;
+}
+.mt-color-light {
+  color: $light;
+}
+.mt-color-dim-light {
+  color: $dim-light;
+}
+.mt-color-primary {
+  color: $primary;
+}

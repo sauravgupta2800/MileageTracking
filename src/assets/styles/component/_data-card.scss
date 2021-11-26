@@ -1,0 +1,13 @@
+.mt-data-card {
+  &__title-section {
+    background: $dim-dark;
+    color: $primary;
+    &__title {
+      color: $light;
+      font-weight: 500;
+    }
+  }
+  &__list {
+    background: $dim-dark;
+  }
+}
