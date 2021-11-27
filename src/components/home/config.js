@@ -1,3 +1,6 @@
+import moment from "moment";
+import { dateFormat, fixedDecimalNoRoundOff } from "./../utils";
+
 export const cardList = [
   {
     title: "Petrol",
@@ -6,22 +9,38 @@ export const cardList = [
       {
         title: "",
         icon: "half-drop",
-        mainText: "6.458",
+        mainText: ({ totalDistance, totalFuel }) => {
+          return `${
+            totalFuel ? fixedDecimalNoRoundOff(totalDistance / totalFuel, 2) : 0
+          }`;
+        },
         subText: "km/l",
         label: "Average fuel consumption",
       },
       {
         title: "",
         icon: "bucket",
-        mainText: "0.00",
+        mainText: ({ latestInfo, previousInfo }) => {
+          const { odometer: latestReading = 0 } = latestInfo;
+          const { odometer: prevReading = 0, fuelInLitre = 0 } = previousInfo;
+          return fuelInLitre
+            ? `${fixedDecimalNoRoundOff(
+                (latestReading - prevReading) / fuelInLitre,
+                2
+              )}`
+            : "0";
+        },
         subText: "km/l",
         label: "Last fuel consumption",
       },
       {
         title: "",
         icon: "tag",
-        mainText: "1.419",
-        subText: "₹",
+        mainText: ({ latestInfo }) => {
+          const { pericePerLitre = 0 } = latestInfo;
+          return `${pericePerLitre}`;
+        },
+        subText: "₹/l",
         label: "Last fuel price",
       },
       {
@@ -29,7 +48,12 @@ export const cardList = [
         icon: "",
         mainText: "",
         subText: "",
-        label: "2021-08-24-7 days ago",
+        label: ({ latestInfo }) => {
+          const { dateTime } = latestInfo;
+          return dateTime
+            ? `${dateFormat(dateTime)} · ${moment(dateTime).fromNow()}`
+            : "";
+        },
       },
     ],
   },
@@ -39,16 +63,22 @@ export const cardList = [
     titleIcon: "cost",
     items: [
       {
-        title: "This months",
+        title: "This month",
         icon: "half-drop",
-        mainText: "240",
+        mainText: ({ currentMonthInfo }) => {
+          const { totalAmount = 0 } = currentMonthInfo;
+          return `${totalAmount}`;
+        },
         subText: "₹",
         label: "Petrol",
       },
       {
         title: "Previous month",
         icon: "half-drop",
-        mainText: "841",
+        mainText: ({ previousMonthInfo }) => {
+          const { totalAmount = 0 } = previousMonthInfo;
+          return `${totalAmount}`;
+        },
         subText: "₹",
         label: "Petrol",
       },
@@ -59,16 +89,32 @@ export const cardList = [
     titleIcon: "timeline",
     items: [
       {
-        title: "7 Jan, 21 5:40 AM",
+        title: ({ latestInfo }) => {
+          const { dateTime } = latestInfo;
+          return dateTime
+            ? `${dateFormat(dateTime, "DD MMMM,YYYY hh:mm")}`
+            : "";
+        },
         icon: "half-drop",
-        mainText: "300",
+        mainText: ({ latestInfo }) => {
+          const { totalAmount = 0 } = latestInfo;
+          return `${totalAmount}`;
+        },
         subText: "₹",
         label: "Refueling",
       },
       {
-        title: "9 Jan, 21 11:40 AM",
+        title: ({ previousInfo }) => {
+          const { dateTime } = previousInfo;
+          return dateTime
+            ? `${dateFormat(dateTime, "DD MMMM, YYYY hh:mm")}`
+            : "";
+        },
         icon: "half-drop",
-        mainText: "110",
+        mainText: ({ previousInfo }) => {
+          const { totalAmount = 0 } = previousInfo;
+          return `${totalAmount}`;
+        },
         subText: "₹",
         label: "Refueling",
       },

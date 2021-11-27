@@ -38,7 +38,7 @@ const DataRow = ({ title, icon, mainText, subText, label, wrapClass = "" }) => {
             <div className="mt-color-dim-light ms-2 fs-5">{subText}</div>
           )}
         </div>
-        <div className="mt-color-dim-light">{label}</div>
+        {label && <div className="mt-color-dim-light">{label}</div>}
       </div>
     </div>
   );

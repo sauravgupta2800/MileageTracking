@@ -1,23 +1,18 @@
 import React, { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import moment from "moment";
 import { Drawer, Input, DatePicker, message } from "antd";
 import Icon from "../common/Icon";
-import moment from "moment";
-
-const fields = [
-  { key: "odometer", placeholder: "Odometer (km)", icon: "odometer" },
-  { key: "petrolinLitre", placeholder: "Petrol (L)", icon: "bucket" },
-  { key: "pericePerLitre", placeholder: "Price/L", icon: "cost" },
-  { key: "totalAmount", placeholder: "Total cost", icon: "wallet" },
-  {
-    key: "dateTime",
-    placeholder: "Date and Time",
-    icon: "calender",
-    type: "datetime",
-  },
-];
+import { addRefuelingRecord } from "../../store/refuelingSlice";
+import { fields } from "./config";
 
 const AddEntryDrawer = ({ visible, title = "Refueling", onClose }) => {
   const [state, setState] = useState({});
+  const dispatch = useDispatch();
+  const totalDistance = useSelector(
+    ({ refueling }) =>
+      refueling.totalDistance + (refueling.latestInfo.odometer || 0)
+  );
 
   useEffect(() => {
     if (visible) {
@@ -40,13 +35,13 @@ const AddEntryDrawer = ({ visible, title = "Refueling", onClose }) => {
   };
 
   const handleSaveRecord = () => {
-    // message.success(`Record Saved`);
-
     if (fields.map(({ key }) => state[key]).some((value) => !value)) {
-      message.error(`Field(s) can't be empty !`);
+      message.error(`Field(s) can't be empty!`);
       return;
     }
+    dispatch(addRefuelingRecord(state));
     message.success(`Record Saved`);
+    onClose();
   };
 
   return (
@@ -63,27 +58,41 @@ const AddEntryDrawer = ({ visible, title = "Refueling", onClose }) => {
       headerStyle={{ padding: "10px 10px 10px 0" }}
     >
       {fields.map(({ key, icon, placeholder, type = "input" }) => (
-        <div key={key} className="d-flex align-items-center mb-4">
-          <Icon id={icon} iconClass="me-3" iconClass="mt-color-primary me-3" />
-          {type === "datetime" ? (
-            <DatePicker
-              showTime
-              defaultValue={moment()}
-              placeholder={placeholder}
-              size="large"
-              format="YYYY-MM-DD hh:mm A"
-              className="w-100"
-              onChange={(event) => setStateWith(key, moment(event).valueOf())}
+        <div key={key} className="w-100 mb-4">
+          <div className="d-flex align-items-center">
+            <Icon
+              id={icon}
+              iconClass="me-3"
+              iconClass="mt-color-primary me-3"
             />
-          ) : (
-            <Input
-              placeholder={placeholder}
-              size="large"
-              className="w-100"
-              type="number"
-              value={state[key]}
-              onChange={(event) => setStateWith(key, event.target.value)}
-            />
+            {type === "datetime" ? (
+              <DatePicker
+                showTime
+                defaultValue={moment()}
+                placeholder={placeholder}
+                size="large"
+                format="YYYY-MM-DD hh:mm A"
+                className="w-100"
+                onChange={(event) => setStateWith(key, moment(event).valueOf())}
+              />
+            ) : (
+              <>
+                <Input
+                  placeholder={placeholder}
+                  size="large"
+                  className="w-100"
+                  type="number"
+                  value={state[key]}
+                  onChange={(event) =>
+                    setStateWith(key, Number(event.target.value))
+                  }
+                />
+              </>
+            )}
+          </div>
+
+          {key === "odometer" && (
+            <div className="mt-color-dim-light fs-5 ms-5 mt-1">{`Last value: ${totalDistance} KM`}</div>
           )}
         </div>
       ))}
