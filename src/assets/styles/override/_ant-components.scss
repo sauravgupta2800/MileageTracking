@@ -1,0 +1,62 @@
+// CALENDER
+.ant-picker {
+  background: $dim-dark;
+  color: $light;
+  border: 0.1rem solid $dim-light;
+}
+.ant-picker-input > input {
+  color: $light;
+}
+
+.ant-picker-datetime-panel {
+  flex-direction: column;
+}
+.ant-picker-date-panel {
+  .ant-picker-body {
+    padding: 0 0.8rem !important;
+  }
+  .ant-picker-content {
+    width: 100% !important;
+  }
+}
+.ant-picker-time-panel {
+  .ant-picker-content {
+    height: 18rem !important;
+  }
+}
+
+//DRAWER
+.ant-drawer-content {
+  background: $dim-dark;
+  .ant-drawer-header {
+    background: $dim-dark;
+    color: $light;
+    border-bottom: none;
+    .ant-drawer-title {
+      color: $light;
+    }
+  }
+}
+
+//INPUT
+.ant-input {
+  background-color: $dim-dark;
+  border: 0.1rem solid $dim-light;
+  color: $light;
+  &:hover {
+    border-color: $primary;
+  }
+}
+
+//TOAST MESSAGES
+.ant-message-notice-content {
+  background: $dark;
+  color: $light;
+  display: inline-flex;
+  align-items: center;
+  height: fit-content;
+  .ant-message-custom-content {
+    display: flex;
+    align-items: center;
+  }
+}
