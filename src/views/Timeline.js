@@ -31,7 +31,7 @@ const Timeline = () => {
               }`}
             >
               <div className="d-flex align-items-center">
-                <div style={{ width: "40x", height: "40px" }}>
+                <div style={{ width: "40px", height: "40px" }}>
                   <Icon
                     id={index % 2 ? "half-drop" : "bucket"}
                     size="lg"
