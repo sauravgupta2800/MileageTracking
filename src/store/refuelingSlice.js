@@ -14,6 +14,8 @@ export const refuelingSlice = createSlice({
     currentMonthInfo: getFromLS("currentMonthInfo") || {},
     previousMonthInfo: getFromLS("previousMonthInfo") || {},
     refuelingHistory: getFromLS("refuelingHistory") || [],
+    refuelingTimelineList: [],
+    hasMore: true,
   },
   reducers: {
     addRefuelingRecord: (state, action) => {
@@ -26,10 +28,10 @@ export const refuelingSlice = createSlice({
 
       // 2. OPARATIONS FOR TOTAL DISTANCE
       const totalDistance =
-        state.totalDistance + (odometer - state.latestInfo.odometer || 0);
+        state.totalDistance + (odometer - previousInfo.odometer || 0);
 
       // 3. OPERATIONS FOR TOTAL FUEL
-      const totalFuel = state.totalFuel + (state.latestInfo.fuelInLitre || 0);
+      const totalFuel = state.totalFuel + (previousInfo.fuelInLitre || 0);
 
       // 4. OPERATIONS FOR CURRENT & PREVIOUS MONTH REFUELING INFO
       let currentMonthInfo = { dateTime, totalAmount };
@@ -66,10 +68,35 @@ export const refuelingSlice = createSlice({
       saveToLS("previousMonthInfo", previousMonthInfo);
       saveToLS("refuelingHistory", refuelingHistory);
     },
+    loadMoreList: (state) => {
+      if (!state.hasMore) return;
+
+      const refuelingTimelineList = cloneDeep(state.refuelingTimelineList);
+      const refuelingHistory = cloneDeep(state.refuelingHistory);
+
+      const size = 10;
+      const startIdx = refuelingTimelineList.length;
+      const endIdx = startIdx + size;
+      let newItems = [];
+      for (
+        let pos = startIdx;
+        pos < Math.min(endIdx, refuelingHistory.length);
+        pos++
+      ) {
+        newItems.push(refuelingHistory[pos]);
+      }
+      state.refuelingTimelineList = [...refuelingTimelineList, ...newItems];
+      state.hasMore = endIdx < refuelingHistory.length;
+    },
+    resetTimeline: (state) => {
+      state.refuelingTimelineList = [];
+      state.hasMore = true;
+    },
   },
 });
 
 // Action creators are generated for each case reducer function
-export const { addRefuelingRecord } = refuelingSlice.actions;
+export const { addRefuelingRecord, loadMoreList, resetTimeline } =
+  refuelingSlice.actions;
 
 export default refuelingSlice.reducer;

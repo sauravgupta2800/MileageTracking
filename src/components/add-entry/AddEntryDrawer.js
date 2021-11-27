@@ -3,15 +3,18 @@ import { useDispatch, useSelector } from "react-redux";
 import moment from "moment";
 import { Drawer, Input, DatePicker, message } from "antd";
 import Icon from "../common/Icon";
-import { addRefuelingRecord } from "../../store/refuelingSlice";
+import {
+  addRefuelingRecord,
+  loadMoreList,
+  resetTimeline,
+} from "../../store/refuelingSlice";
 import { fields } from "./config";
 
 const AddEntryDrawer = ({ visible, title = "Refueling", onClose }) => {
   const [state, setState] = useState({});
   const dispatch = useDispatch();
   const totalDistance = useSelector(
-    ({ refueling }) =>
-      refueling.totalDistance + (refueling.latestInfo.odometer || 0)
+    ({ refueling }) => refueling.latestInfo.odometer || 0
   );
 
   useEffect(() => {
@@ -42,6 +45,8 @@ const AddEntryDrawer = ({ visible, title = "Refueling", onClose }) => {
     dispatch(addRefuelingRecord(state));
     message.success(`Record Saved`);
     onClose();
+    dispatch(resetTimeline());
+    dispatch(loadMoreList());
   };
 
   return (
